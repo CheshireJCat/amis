@@ -7,6 +7,7 @@ import {autobind, createObject} from 'amis-core';
 import {normalizeOptions, Option} from 'amis-core';
 import {PlainObject, ActionObject} from 'amis-core';
 import {BaseSchema, FormBaseControlSchema} from '../../Schema';
+import HocStatic from './HocStatic';
 /**
  * 数字输入框
  * 文档：https://baidu.gitee.io/amis/docs/components/form/number
@@ -118,7 +119,7 @@ interface NumberState {
 
 export type InputNumberRendererEvent = 'blur' | 'focus' | 'change';
 export type InputNumberRendererAction = 'clear';
-
+@HocStatic()
 export default class NumberControl extends React.Component<
   NumberProps,
   NumberState

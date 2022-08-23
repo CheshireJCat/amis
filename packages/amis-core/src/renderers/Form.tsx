@@ -474,6 +474,7 @@ export default class Form extends React.Component<FormProps, object> {
 
     store.setCanAccessSuperData(canAccessSuperData !== false);
     store.setPersistData(persistData);
+    store.setStatic(props.static);
 
     if (simpleMode) {
       store.setInited(true);
@@ -1491,6 +1492,7 @@ export default class Form extends React.Component<FormProps, object> {
       horizontal,
       store,
       disabled,
+      static: isStatic,
       controlWidth,
       resolveDefinitions,
       lazyChange,
@@ -1502,7 +1504,9 @@ export default class Form extends React.Component<FormProps, object> {
 
     const subProps = {
       formStore: form,
-      data: store.data,
+      data: createObject(store.data, {
+        static: props.static || form.static
+      }),
       key: `${(control as Schema).name || ''}-${
         (control as Schema).type
       }-${key}`,
@@ -1514,6 +1518,7 @@ export default class Form extends React.Component<FormProps, object> {
       formLabelWidth: labelWidth,
       controlWidth,
       disabled: disabled || (control as Schema).disabled || form.loading,
+      static: isStatic || (control as Schema).static || form.static,
       btnDisabled: disabled || form.loading || form.validating,
       onAction: this.handleAction,
       onQuery: this.handleQuery,
@@ -1640,7 +1645,9 @@ export default class Form extends React.Component<FormProps, object> {
           },
           {
             key: 'dialog',
-            data: store.dialogData,
+            data: createObject(store.dialogData, {
+              static: this.props.static || store.static
+            }),
             onConfirm: this.handleDialogConfirm,
             onClose: this.handleDialogClose,
             show: store.dialogOpen
@@ -1656,7 +1663,9 @@ export default class Form extends React.Component<FormProps, object> {
           },
           {
             key: 'drawer',
-            data: store.drawerData,
+            data: createObject(store.drawerData, {
+              static: this.props.static || store.static
+            }),
             onConfirm: this.handleDrawerConfirm,
             onClose: this.handleDrawerClose,
             show: store.drawerOpen
@@ -1712,7 +1721,8 @@ export default class Form extends React.Component<FormProps, object> {
           footerWrapClassName,
           actionsClassName,
           bodyClassName,
-          affixFooter
+          affixFooter,
+          data: createObject({static: this.props.static || store.static})
         }
       ) as JSX.Element;
     }
@@ -1753,7 +1763,6 @@ export class FormRenderer extends Form {
 
   constructor(props: FormProps, context: IScopedContext) {
     super(props);
-
     const scoped = context;
     scoped.registerComponent(this);
   }

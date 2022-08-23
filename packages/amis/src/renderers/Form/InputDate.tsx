@@ -8,6 +8,7 @@ import {DatePicker} from 'amis-ui';
 import {FormBaseControlSchema, SchemaObject} from '../../Schema';
 import {createObject, anyChanged, isMobile, autobind} from 'amis-core';
 import {ActionObject} from 'amis-core';
+import HocStatic from './HocStatic';
 
 export interface InputDateBaseControlSchema extends FormBaseControlSchema {
   /**
@@ -278,6 +279,11 @@ interface DateControlState {
   }>;
 }
 
+@HocStatic({
+  staticSchema: {
+    type: 'date'
+  }
+})
 export default class DateControl extends React.PureComponent<
   DateProps,
   DateControlState

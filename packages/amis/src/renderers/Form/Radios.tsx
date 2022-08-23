@@ -10,6 +10,7 @@ import {
 import {autobind, isEmpty, createObject} from 'amis-core';
 import {ActionObject} from 'amis-core';
 import {FormOptionsSchema} from '../../Schema';
+import HocStatic from './HocStatic';
 
 /**
  * Radio 单选框。
@@ -36,6 +37,7 @@ export interface RadiosProps extends OptionsControlProps {
   optionClassName?: string;
 }
 
+@HocStatic()
 export default class RadiosControl extends React.Component<RadiosProps, any> {
   static defaultProps: Partial<RadiosProps> = {
     columnsCount: 1

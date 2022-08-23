@@ -13,6 +13,7 @@ import {autobind, createObject} from 'amis-core';
 import {filter} from 'amis-core';
 import {FormBaseControlSchema, SchemaObject} from '../../Schema';
 import {ActionObject} from 'amis-core';
+import HocStatic from './HocStatic';
 
 /**
  * Range
@@ -444,6 +445,7 @@ export class Input extends React.Component<RangeItemProps, any> {
   }
 }
 
+@HocStatic()
 export default class RangeControl extends React.PureComponent<
   RangeProps,
   RangeState

@@ -331,7 +331,7 @@ export default {
     },
     {
       type: 'input-date-range',
-      name: 'daterangee',
+      name: 'daterange',
       inline: true,
       label: '时间范围'
     },

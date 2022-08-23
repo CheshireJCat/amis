@@ -25,6 +25,7 @@ import {dataMapping, isPureVariable, resolveVariableAndFilter} from 'amis-core';
 import {FormOptionsSchema, SchemaCollection, SchemaTpl} from '../../Schema';
 import {CRUDSchema} from '../CRUD';
 import {isApiOutdated, isEffectiveApi} from 'amis-core';
+import HocStatic from './HocStatic';
 
 /**
  * Picker
@@ -77,6 +78,7 @@ export interface PickerState {
   schema: SchemaNode;
 }
 
+@HocStatic()
 export default class PickerControl extends React.PureComponent<
   PickerProps,
   any

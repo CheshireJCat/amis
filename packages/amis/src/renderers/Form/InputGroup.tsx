@@ -138,6 +138,16 @@ export class InputGroup extends React.Component<
         })}
       >
         {inputs.map((control, index) => {
+          const isButton = [
+            'button',
+            'submit',
+            'reset'
+          ].includes(control && control.type);
+
+          if (this.props.static && isButton) {
+            return null;
+          }
+
           const isAddOn = ~[
             'icon',
             'plain',

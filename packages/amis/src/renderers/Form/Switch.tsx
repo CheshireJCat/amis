@@ -5,6 +5,7 @@ import {createObject, autobind, isObject} from 'amis-core';
 import {generateIcon} from 'amis-core';
 import {IconSchema} from '../Icon';
 import {FormBaseControlSchema} from '../../Schema';
+import HocStatic from './HocStatic';
 
 /**
  * Switch
@@ -55,6 +56,24 @@ export interface SwitchProps extends FormControlProps {
 
 export type SwitchRendererEvent = 'change';
 
+@HocStatic({
+  StaticComponent(props) {
+    const {
+      value,
+      trueValue,
+      onText = '开',
+      offText = '关',
+      classnames: cx
+    } = props;
+    const on = () => isObject(onText)
+      ? generateIcon(cx, onText.icon, 'Switch-icon')
+      : onText;
+    const off = () => isObject(offText)
+      ? generateIcon(cx, offText.icon, 'Switch-icon')
+      : offText;
+    return <>{value === trueValue ? on() : off()}</>;
+  }
+})
 export default class SwitchControl extends React.Component<SwitchProps, any> {
   static defaultProps = {
     trueValue: true,

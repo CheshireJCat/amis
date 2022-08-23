@@ -27,6 +27,7 @@ export const FormStore = ServiceStore.named('FormStore')
     validated: false,
     submited: false,
     submiting: false,
+    static: false,
     savedData: types.frozen(),
     // items: types.optional(types.array(types.late(() => FormItemStore)), []),
     canAccessSuperData: true,
@@ -626,6 +627,10 @@ export const FormStore = ServiceStore.named('FormStore')
       self.inited = value;
     }
 
+    function setStatic(value: boolean) {
+      self.static = value;
+    }
+
     function setPersistData(value = '') {
       self.persistData = value;
     }
@@ -651,6 +656,7 @@ export const FormStore = ServiceStore.named('FormStore')
 
     return {
       setInited,
+      setStatic,
       setValues,
       setValueByName,
       trimValues,

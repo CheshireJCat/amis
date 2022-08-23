@@ -1393,6 +1393,8 @@ export const detectProps = [
   'desc',
   'description',
   'disabled',
+  'readOnly',
+  'static',
   'draggable',
   'editable',
   'editButtonClassName',
@@ -1518,7 +1520,7 @@ export function asFormItem(config: Omit<FormItemConfig, 'component'>) {
             ) {
               return true;
             }
-
+            
             // 把可能会影响视图的白名单弄出来，减少重新渲染次数。
             if (
               anyChanged(

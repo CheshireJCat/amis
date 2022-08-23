@@ -50,6 +50,12 @@ export default {
         },
 
         {
+          type: 'static-color',
+          label: '颜色',
+          value: '#ff0'
+        },
+
+        {
           type: 'divider'
         },
 
@@ -155,7 +161,7 @@ export default {
         {
           type: 'static-json',
           label: 'JSON',
-          value: {a: 1, b: 2, c: {d: 3}}
+          value: { a: 1, b: 2, c: { d: 3 } }
         },
 
         {

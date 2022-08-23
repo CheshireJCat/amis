@@ -33,6 +33,7 @@ import {
   SchemaTpl
 } from '../../Schema';
 import {ListenerAction} from 'amis-core';
+import HocStatic from './HocStatic';
 
 export type ComboCondition = {
   test: string;
@@ -1607,6 +1608,7 @@ export default class ComboControl extends React.Component<ComboProps> {
   storeType: ComboStore.name,
   extendsData: false
 })
+@HocStatic()
 export class ComboControlRenderer extends ComboControl {
   // 支持更新指定索引的值
   setData(value: any, index?: number) {
@@ -1630,11 +1632,21 @@ export class ComboControlRenderer extends ComboControl {
   storeType: ComboStore.name,
   extendsData: false
 })
+@HocStatic({
+  staticSchema: {
+    type: 'json'
+  }
+})
 export class KVControlRenderer extends ComboControl {}
 
 @FormItem({
   type: 'input-kvs',
   storeType: ComboStore.name,
   extendsData: false
+})
+@HocStatic({
+  staticSchema: {
+    type: 'json'
+  }
 })
 export class KVSControlRenderer extends ComboControl {}

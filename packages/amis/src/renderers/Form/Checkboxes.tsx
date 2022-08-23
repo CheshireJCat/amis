@@ -11,6 +11,7 @@ import {
 import type {ActionObject, Api, OptionsControlProps, Option} from 'amis-core';
 import {Checkbox, Icon} from 'amis-ui';
 import {FormOptionsSchema} from '../../Schema';
+import HocStatic from './HocStatic';
 
 /**
  * 复选框
@@ -63,7 +64,7 @@ export interface CheckboxesProps
   optionType?: 'default' | 'button';
   menuTpl?: string;
 }
-
+@HocStatic()
 export default class CheckboxesControl extends React.Component<
   CheckboxesProps,
   any

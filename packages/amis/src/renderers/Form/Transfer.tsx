@@ -26,6 +26,7 @@ import {Selection as BaseSelection} from 'amis-ui';
 import {ResultList} from 'amis-ui';
 import {ActionObject} from 'amis-core';
 import type {ItemRenderStates} from 'amis-ui/lib/components/Selection';
+import HocStatic from './HocStatic';
 
 /**
  * Transfer
@@ -143,6 +144,7 @@ export interface BaseTransferProps
   resultItemRender?: (option: Option) => JSX.Element;
 }
 
+@HocStatic()
 export class BaseTransferRenderer<
   T extends OptionsControlProps = BaseTransferProps
 > extends React.Component<T> {

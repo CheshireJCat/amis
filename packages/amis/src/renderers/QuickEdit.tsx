@@ -458,6 +458,7 @@ export const HocQuickEdit =
           >
             {render('quick-edit-form', this.buildSchema(), {
               value: undefined,
+              static: false,
               onSubmit: this.handleSubmit,
               onAction: this.handleAction,
               onChange: null,
@@ -505,7 +506,8 @@ export const HocQuickEdit =
           render,
           noHoc,
           canAccessSuperData,
-          disabled
+          disabled,
+          readOnly
         } = this.props;
 
         if (
@@ -513,7 +515,8 @@ export const HocQuickEdit =
           !onQuickChange ||
           quickEditEnabled === false ||
           noHoc ||
-          disabled
+          disabled ||
+          readOnly
         ) {
           return <Component {...this.props} />;
         }

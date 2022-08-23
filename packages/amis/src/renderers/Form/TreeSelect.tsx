@@ -23,6 +23,7 @@ import {findDOMNode} from 'react-dom';
 import {normalizeOptions} from 'amis-core';
 import {ActionObject} from 'amis-core';
 import {FormOptionsSchema} from '../../Schema';
+import HocStatic from './HocStatic';
 
 /**
  * Tree 下拉选择框。
@@ -111,6 +112,7 @@ export interface TreeSelectState {
   inputValue: string;
 }
 
+@HocStatic()
 export default class TreeSelectControl extends React.Component<
   TreeSelectProps,
   TreeSelectState

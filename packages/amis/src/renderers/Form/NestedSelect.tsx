@@ -30,6 +30,7 @@ import {RootClose} from 'amis-core';
 import {Cascader} from 'amis-ui';
 import {ActionObject} from 'amis-core';
 import {FormOptionsSchema} from '../../Schema';
+import HocStatic from './HocStatic';
 
 /**
  * Nested Select
@@ -89,6 +90,7 @@ export interface NestedSelectState {
   stack: Array<Array<Option>>;
 }
 
+@HocStatic()
 export default class NestedSelectControl extends React.Component<
   NestedSelectProps,
   NestedSelectState

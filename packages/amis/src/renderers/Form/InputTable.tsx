@@ -31,6 +31,7 @@ import {TableSchema} from '../Table';
 import {SchemaApi} from '../../Schema';
 import find from 'lodash/find';
 import moment from 'moment';
+import HocStatic from './HocStatic';
 
 export interface TableControlSchema
   extends FormBaseControl,
@@ -199,6 +200,7 @@ export interface TableState {
   page?: number;
 }
 
+@HocStatic()
 export default class FormTable extends React.Component<TableProps, TableState> {
   static defaultProps = {
     placeholder: 'placeholder.empty',

@@ -20,6 +20,7 @@ import {TransferDropDown} from 'amis-ui';
 
 import type {SchemaClassName} from '../../Schema';
 import type {TooltipObject} from 'amis-ui/lib/components/TooltipWrapper';
+import HocStatic from './HocStatic';
 
 /**
  * Select 下拉选择框。
@@ -150,6 +151,8 @@ export type SelectRendererEvent =
   | 'add'
   | 'edit'
   | 'delete';
+
+@HocStatic()
 export default class SelectControl extends React.Component<SelectProps, any> {
   static defaultProps: Partial<SelectProps> = {
     clearable: false,

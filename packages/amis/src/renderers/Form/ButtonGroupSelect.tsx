@@ -8,6 +8,7 @@ import type {Option} from 'amis-core';
 import {ActionObject} from 'amis-core';
 import {getLevelFromClassName, autobind, isEmpty} from 'amis-core';
 import {ButtonGroupSchema} from '../ButtonGroup';
+import HocStatic from './HocStatic';
 
 /**
  * 按钮组控件。
@@ -34,6 +35,7 @@ export interface ButtonGroupProps
   options: Array<Option>;
 }
 
+@HocStatic()
 export default class ButtonGroupControl extends React.Component<
   ButtonGroupProps,
   any

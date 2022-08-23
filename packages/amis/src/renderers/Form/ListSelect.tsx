@@ -12,6 +12,7 @@ import {
   SchemaClassName,
   SchemaCollection
 } from '../../Schema';
+import HocStatic from './HocStatic';
 
 /**
  * List 复选框
@@ -53,6 +54,7 @@ export interface ListProps
       | 'inputClassName'
     > {}
 
+@HocStatic()
 export default class ListControl extends React.Component<ListProps, any> {
   static propsList = ['itemSchema', 'value', 'renderFormItems'];
   static defaultProps = {
@@ -101,7 +103,6 @@ export default class ListControl extends React.Component<ListProps, any> {
       classnames: cx,
       className,
       disabled,
-      options,
       placeholder,
       selectedOptions,
       imageClassName,
@@ -110,8 +111,19 @@ export default class ListControl extends React.Component<ListProps, any> {
       data,
       labelField,
       listClassName,
-      translate: __
+      translate: __,
+      static: isStatic,
+      staticPlaceholder = '-'
     } = this.props;
+
+    let options = this.props.options;
+
+    if (isStatic) {
+      if (selectedOptions?.length < 1) {
+        return staticPlaceholder;
+      }
+      options = selectedOptions;
+    }
 
     let body: JSX.Element | null = null;
 

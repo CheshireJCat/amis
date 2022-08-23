@@ -5,6 +5,8 @@ import {FormItem, FormControlProps, FormBaseControl} from 'amis-core';
 import type {PresetColor} from 'amis-ui';
 import {isMobile} from 'amis-core';
 import {FormBaseControlSchema} from '../../Schema';
+import HocStatic from './HocStatic';
+import {ColorField} from '../Color';
 
 // todo amis-ui 里面组件直接改成按需加载
 export const ColorPicker = React.lazy(
@@ -58,6 +60,10 @@ export interface ColorControlState {
   open: boolean;
 }
 
+@HocStatic({
+  StaticComponent: ColorField,
+  staticPlaceholder: '#fff'
+})
 export default class ColorControl extends React.PureComponent<
   ColorProps,
   ColorControlState

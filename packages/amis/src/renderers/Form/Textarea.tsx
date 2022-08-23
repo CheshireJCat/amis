@@ -8,6 +8,7 @@ import {autobind, ucFirst} from 'amis-core';
 import {bindRendererEvent} from 'amis-core';
 import type {ListenerAction} from 'amis-core';
 import {FormBaseControlSchema} from '../../Schema';
+import HocStatic from './HocStatic';
 
 /**
  * TextArea 多行文本输入框。
@@ -74,6 +75,7 @@ export interface TextAreaState {
   focused: boolean;
 }
 
+@HocStatic()
 export default class TextAreaControl extends React.Component<
   TextAreaProps,
   TextAreaState

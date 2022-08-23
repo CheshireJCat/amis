@@ -10,6 +10,7 @@ import {Checkbox, Spinner} from 'amis-ui';
 import {autobind, setVariable, createObject} from 'amis-core';
 import {ApiObject, ActionObject} from 'amis-core';
 import {FormBaseControlSchema, SchemaApi} from '../../Schema';
+import HocStatic from './HocStatic';
 
 /**
  * Matrix 选择控件。适合做权限勾选。
@@ -77,6 +78,7 @@ export interface MatrixState {
   singleSelectMode?: 'cell' | 'row' | 'column';
 }
 
+@HocStatic()
 export default class MatrixCheckbox extends React.Component<
   MatrixProps,
   MatrixState

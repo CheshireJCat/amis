@@ -3,6 +3,7 @@ import {FormItem, FormControlProps} from 'amis-core';
 import {ComboStore, IComboStore} from 'amis-core';
 import Combo, {ComboControlSchema} from './Combo';
 import {SchemaCollection} from '../../Schema';
+import HocStatic from './HocStatic';
 
 /**
  * InputArray 数组输入框。 combo 的别名。
@@ -68,4 +69,5 @@ export default class InputArrayControl extends React.Component<InputArrayProps> 
   type: 'input-array',
   storeType: ComboStore.name
 })
+@HocStatic()
 export class ArrayControlRenderer extends InputArrayControl {}

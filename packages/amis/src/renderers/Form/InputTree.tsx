@@ -12,6 +12,7 @@ import {
 } from 'amis-core';
 import {Spinner} from 'amis-ui';
 import {FormOptionsSchema, SchemaApi} from '../../Schema';
+import HocStatic from './HocStatic';
 
 /**
  * Tree 下拉选择框。
@@ -111,6 +112,7 @@ export interface TreeProps
   pathSeparator?: string;
 }
 
+@HocStatic()
 export default class TreeControl extends React.Component<TreeProps> {
   static defaultProps: Partial<TreeProps> = {
     placeholder: 'loading',

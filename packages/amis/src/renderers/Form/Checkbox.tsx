@@ -6,6 +6,7 @@ import {withBadge, BadgeObject} from 'amis-ui';
 import {autobind, createObject} from 'amis-core';
 import {ActionObject} from 'amis-core';
 import {BaseSchema, FormBaseControlSchema} from '../../Schema';
+import HocStatic from './HocStatic';
 
 export interface SchemaMap {
   checkbox: CheckboxControlSchema;
@@ -52,6 +53,7 @@ export interface CheckboxProps
       'type' | 'className' | 'descriptionClassName' | 'inputClassName'
     > {}
 
+@HocStatic()
 export default class CheckboxControl extends React.Component<
   CheckboxProps,
   any

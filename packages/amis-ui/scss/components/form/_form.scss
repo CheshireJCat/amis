@@ -46,6 +46,12 @@
     border-radius: var(--Form-input-borderRadius);
     padding: var(--Form-input-paddingY) var(--Form-input-paddingX);
   }
+
+  &.is-static {
+    .is-disabled {
+      opacity: 1;
+    }
+  }
 }
 
 .#{$ns}Form-label {

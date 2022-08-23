@@ -23,6 +23,7 @@ import {rendererEventDispatcher, bindRendererEvent} from 'amis-core';
 
 import type {Option} from 'amis-core';
 import type {ListenerAction} from 'amis-core';
+import HocStatic from './HocStatic';
 
 // declare function matchSorter(items:Array<any>, input:any, options:any): Array<any>;
 
@@ -139,6 +140,7 @@ export interface TextState {
   revealPassword?: boolean; // 主要用于 password 的时候切换一下显影
 }
 
+@HocStatic()
 export default class TextControl extends React.PureComponent<
   TextProps,
   TextState
@@ -916,13 +918,13 @@ export default class TextControl extends React.PureComponent<
         : addOnRaw;
 
     let input =
-      autoComplete !== false && (source || options.length || autoComplete)
+      autoComplete !== false && (source || options?.length || autoComplete)
         ? this.renderSugestMode()
         : this.renderNormal();
 
     const iconElement = generateIcon(cx, addOn?.icon, 'Icon');
 
-    let addOnDom = addOn ? (
+    let addOnDom = addOn && !this.props.static ? (
       addOn.actionType ||
       ~['button', 'submit', 'reset', 'action'].indexOf(addOn.type) ? (
         <div className={cx(`${ns}TextControl-button`, addOn.className)}>

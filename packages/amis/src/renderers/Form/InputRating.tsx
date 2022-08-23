@@ -5,6 +5,7 @@ import {ActionObject} from 'amis-core';
 import {Rating} from 'amis-ui';
 import type {textPositionType} from 'amis-ui/lib/components/Rating';
 import {FormBaseControlSchema} from '../../Schema';
+import HocStatic from './HocStatic';
 
 /**
  * Rating
@@ -79,7 +80,7 @@ export interface RatingProps extends FormControlProps {
   half: boolean;
   readOnly: boolean;
 }
-
+@HocStatic()
 export default class RatingControl extends React.Component<RatingProps, any> {
   static defaultProps: Partial<RatingProps> = {
     value: 0,

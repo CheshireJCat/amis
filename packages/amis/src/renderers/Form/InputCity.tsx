@@ -9,6 +9,7 @@ import {ActionObject} from 'amis-core';
 import {Option} from 'amis-core';
 import {localeable, LocaleProps} from 'amis-core';
 import {FormBaseControlSchema} from '../../Schema';
+import HocStatic from './HocStatic';
 
 /**
  * City 城市选择框。
@@ -461,6 +462,7 @@ export interface LocationControlProps extends FormControlProps {
   joinValues?: boolean;
   allowStreet?: boolean;
 }
+
 export class LocationControl extends React.Component<LocationControlProps> {
   @autobind
   doAction(action: ActionObject, data: object, throwErrors: boolean) {

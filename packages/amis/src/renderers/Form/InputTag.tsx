@@ -19,6 +19,7 @@ import {PopOver} from 'amis-core';
 import {ListMenu} from 'amis-ui';
 import {ActionObject} from 'amis-core';
 import {FormOptionsSchema} from '../../Schema';
+import HocStatic from './HocStatic';
 
 /**
  * Tag 输入框
@@ -98,7 +99,35 @@ export interface TagState {
   isFocused?: boolean;
   isOpened?: boolean;
 }
+@HocStatic({
+  StaticComponent(props) {
+    const {
+      selectedOptions,
+      staticPlaceholder = '',
+      render
+    } = props;
 
+    if (selectedOptions.length < 1) {
+      return staticPlaceholder;
+    }
+    return <>
+      {
+        selectedOptions.map((item: {
+          label: string
+        }, index: number) => render(
+          'static-input-tag',
+          {
+            type: 'tag',
+            label: item.label
+          },
+          {
+            key: index
+          }
+        ))
+      }
+    </>;
+  }
+})
 export default class TagControl extends React.PureComponent<
   TagProps,
   TagState
