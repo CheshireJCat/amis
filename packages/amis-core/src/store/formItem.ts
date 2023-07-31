@@ -22,7 +22,8 @@ import {
   findTree,
   findTreeIndex,
   spliceTree,
-  filterTree
+  filterTree,
+  eachTree
 } from '../utils/helper';
 import {flattenTree} from '../utils/helper';
 import find from 'lodash/find';
@@ -33,6 +34,7 @@ import {getStoreById} from './manager';
 import {normalizeOptions} from '../utils/normalizeOptions';
 import {optionValueCompare} from '../utils/optionValueCompare';
 import {dataMapping} from '../utils/dataMapping';
+import {isEqual} from 'lodash';
 
 interface IOption {
   value?: string | number | null;
@@ -48,6 +50,12 @@ const ErrorDetail = types.model('ErrorDetail', {
   tag: '',
   rule: ''
 });
+
+const getSelectedOptionsCache: any = {
+  value: null,
+  nodeValueArray: null,
+  res: null
+};
 
 export const FormItemStore = StoreNode.named('FormItemStore')
   .props({
@@ -158,57 +166,99 @@ export const FormItemStore = StoreNode.named('FormItemStore')
         value: any = self.tmpValue,
         nodeValueArray?: any[] | undefined
       ) => {
+        // handleChange 时，各个地方会连续重复调用此函数，一般是4次
+        // 加一个简单缓存，提高效率
+        if (
+          isEqual(value, getSelectedOptionsCache.value) &&
+          isEqual(nodeValueArray, getSelectedOptionsCache.nodeValueArray) &&
+          getSelectedOptionsCache.res
+        ) {
+          console.log('命中缓存', getSelectedOptionsCache.res);
+          return getSelectedOptionsCache.res;
+        }
+
+        console.log('没有命中');
+
         if (typeof value === 'undefined') {
           return [];
         }
+
+        const filteredOptions = self.filteredOptions;
+        const {labelField, extractValue, multiple, delimiter} = self;
+        const valueField = self.valueField || 'value';
 
         const valueArray = nodeValueArray
           ? nodeValueArray
           : Array.isArray(value)
           ? value
           : // 单选时不应该分割
-          typeof value === 'string' && self.multiple
-          ? value.split(self.delimiter || ',')
+          typeof value === 'string' && multiple
+          ? value.split(delimiter || ',')
           : [value];
+
         const selected = valueArray.map(item =>
-          item && item.hasOwnProperty(self.valueField || 'value')
-            ? item[self.valueField || 'value']
-            : item
+          item && item.hasOwnProperty(valueField) ? item[valueField] : item
         );
 
-        const selectedOptions: Array<any> = [];
+        let selectedOptions: Array<any> = [];
 
-        selected.forEach((item, index) => {
-          const matched = findTree(
-            self.filteredOptions,
-            optionValueCompare(item, self.valueField || 'value')
-          );
+        const selectedMap = new Map();
+
+        eachTree(filteredOptions, eachTreeItem => {
+          const nodeValue = eachTreeItem[valueField];
+          (typeof nodeValue === 'string' || typeof nodeValue === 'number') &&
+            selectedMap.set(nodeValue, eachTreeItem);
+        });
+
+        selectedOptions = selected.map((item, index) => {
+          let matched;
+          if (typeof item === 'string' || typeof item === 'number') {
+            matched = selectedMap.get(item);
+            return matched;
+          }
+
+          if (!matched) {
+            matched = findTree(
+              self.filteredOptions,
+              optionValueCompare(item, self.valueField || 'value')
+            );
+          }
 
           if (matched) {
-            selectedOptions.push(matched);
-          } else {
-            let unMatched = (valueArray && valueArray[index]) || item;
-
-            if (
-              unMatched &&
-              (typeof unMatched === 'string' || typeof unMatched === 'number')
-            ) {
-              unMatched = {
-                [self.valueField || 'value']: item,
-                [self.labelField || 'label']: item,
-                __unmatched: true
-              };
-            } else if (unMatched && self.extractValue) {
-              unMatched = {
-                [self.valueField || 'value']: item,
-                [self.labelField || 'label']: 'UnKnown',
-                __unmatched: true
-              };
-            }
-
-            unMatched && selectedOptions.push(unMatched);
+            // selectedOptions.push(matched);
+            return matched;
           }
+
+          let unMatched = (valueArray && valueArray[index]) || item;
+
+          if (
+            unMatched &&
+            (typeof unMatched === 'string' || typeof unMatched === 'number')
+          ) {
+            unMatched = {
+              [valueField || 'value']: item,
+              [labelField || 'label']: item,
+              __unmatched: true
+            };
+          } else if (unMatched && extractValue) {
+            unMatched = {
+              [valueField || 'value']: item,
+              [labelField || 'label']: 'UnKnown',
+              __unmatched: true
+            };
+          }
+
+          // unMatched && selectedOptions.push(unMatched);
+          return unMatched;
         });
+
+        selectedMap.clear();
+
+        if (selectedOptions.length) {
+          getSelectedOptionsCache.value = value;
+          getSelectedOptionsCache.nodeValueArray = nodeValueArray;
+          getSelectedOptionsCache.res = selectedOptions;
+        }
 
         return selectedOptions;
       },

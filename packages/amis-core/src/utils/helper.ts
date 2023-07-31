@@ -825,13 +825,20 @@ export function eachTree<T extends TreeItem>(
   level: number = 1,
   paths: Array<T> = []
 ) {
-  tree.map((item, index) => {
-    iterator(item, index, level, paths);
+  const length = tree.length;
+  for (let i = 0; i < length; i++) {
+    const item = tree[i];
+    const res = iterator(item, i, level, paths);
+    if (res === 'break') {
+      break;
+    } else if (res === 'continue') {
+      continue;
+    }
 
     if (item.children?.splice) {
       eachTree(item.children, iterator, level + 1, paths.concat(item));
     }
-  });
+  }
 }
 
 /**
@@ -845,7 +852,7 @@ export function findTree<T extends TreeItem>(
 ): T | null {
   let result: T | null = null;
 
-  everyTree(tree, (item, key, level, paths) => {
+  const found = everyTree(tree, (item, key, level, paths) => {
     if (iterator(item, key, level, paths)) {
       result = item;
       return false;
@@ -853,7 +860,7 @@ export function findTree<T extends TreeItem>(
     return true;
   });
 
-  return result;
+  return found ? result : null;
 }
 
 /**
@@ -1002,24 +1009,50 @@ export function everyTree<T extends TreeItem>(
   paths: Array<T> = [],
   indexes: Array<number> = []
 ): boolean {
-  if (!Array.isArray(tree) && !isObservableArray(tree)) {
-    return false;
-  }
-  return tree.every((item, index) => {
-    const value: any = iterator(item, index, level, paths, indexes);
+  const stack: {
+    item: T;
+    index: number;
+    level: number;
+    paths: Array<T>;
+    indexes: Array<number>;
+  }[] = [];
+  stack.push({item: null as any, index: -1, level: 1, paths: [], indexes: []});
+  while (stack.length > 0) {
+    const {item, index, level, paths, indexes} = stack.pop()!;
 
-    if (value && item.children?.splice) {
-      return everyTree(
-        item.children,
-        iterator,
-        level + 1,
-        paths.concat(item),
-        indexes.concat(index)
-      );
+    if (index >= 0) {
+      const value: any = iterator(item, index, level, paths, indexes);
+
+      if (value && item.children?.splice) {
+        const children = item.children;
+        for (let i = children.length - 1; i >= 0; i--) {
+          stack.push({
+            item: children[i],
+            index: i,
+            level: level + 1,
+            paths: paths.concat(item),
+            indexes: indexes.concat(index)
+          });
+        }
+      } else if (!value) {
+        return false;
+      }
+    } else {
+      if (!Array.isArray(tree) && !isObservableArray(tree)) {
+        return false;
+      }
+      for (let i = tree.length - 1; i >= 0; i--) {
+        stack.push({
+          item: tree[i],
+          index: i,
+          level: 1,
+          paths: [],
+          indexes: []
+        });
+      }
     }
-
-    return value;
-  });
+  }
+  return true;
 }
 
 /**
