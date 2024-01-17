@@ -654,6 +654,7 @@ export default class ImageControl extends React.Component<
       multiple,
       onChange,
       maxLength,
+      limit,
       maxSize,
       translate: __
     } = this.props;
@@ -1135,7 +1136,7 @@ export default class ImageControl extends React.Component<
       return;
     }
 
-    const {multiple, maxLength, maxSize, translate: __} = this.props;
+    const {multiple, maxLength, maxSize, limit, translate: __} = this.props;
     let currentFiles = this.files;
 
     if (!multiple && currentFiles.length) {
@@ -1152,7 +1153,7 @@ export default class ImageControl extends React.Component<
     const inputFiles: Array<FileX> = [];
 
     [].slice.call(files, 0, allowed).forEach((file: FileX) => {
-      if (maxSize && file.size > maxSize) {
+      if (limit && maxSize && file.size > maxSize) {
         this.props.env.alert(
           __('File.maxSize', {
             filename: file.name || __('File.imageAfterCrop'),
@@ -1671,7 +1672,6 @@ export default class ImageControl extends React.Component<
             accept={accept}
             multiple={dropMultiple}
             disabled={disabled}
-            maxSize={crop ? undefined : maxSize}
           >
             {({
               getRootProps,
