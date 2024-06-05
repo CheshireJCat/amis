@@ -55,6 +55,7 @@ import {normalizeOptions} from '../utils/normalizeOptions';
 import {optionValueCompare} from '../utils/optionValueCompare';
 import type {Option} from '../types';
 import {deleteVariable, resolveEventData} from '../utils';
+import isEqual from 'lodash/isEqual';
 
 export {Option};
 
@@ -524,7 +525,12 @@ export function registerOptionsControl(config: OptionsConfig) {
         onChange
       } = this.props;
 
-      if (!formItem || joinValues !== false || !formItem.options.length) {
+      if (!formItem || joinValues !== false || value == null) {
+        return;
+      }
+
+      if (!formItem.options.length && multiple && !isEqual(value, [])) {
+        onChange?.([]);
         return;
       }
 
